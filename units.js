@@ -1,0 +1,86 @@
+
+boardSize = 14;
+
+units = new Array(boardSize+1);
+for(i=1;i<boardSize+1;i++){
+	units[i] = new Array(boardSize+1);
+	}
+//todo add barricade array
+
+
+targetURL = "gameServer.php";
+evtSource = null;
+
+function clearUnits(){
+	for(i=1;i<=boardSize;i++){
+		for(j=1;j<=boardSize;j++){
+			units[i][j] = null;
+			}
+		}
+	}
+
+function renderUnits(){
+	for(i=1;i<=boardSize;i++){
+		for(j=1;j<=boardSize;j++){
+			var baseId = i.toString() + " " + j.toString();
+			var unit = units[i][j];
+			if(unit==null){
+				uiHideUnit(i,j);
+				}
+			else{
+				uiShowUnit(i,j);
+				uiSetUnit(i,j,unit);
+				}
+			}
+		}
+	}
+
+function recordUnit(x,y,type,hp,moves,ammo){
+	var unit = {"type": type, "hp": hp, "moves": moves, "ammo": ammo };
+	units[x][y] = unit;
+	}
+
+function initListener(){
+	evtSource = new EventSource(targetURL);
+	evtSource.onmessage = handleMessage;
+	evtSource.onmessage =function(e) {
+		consonle.log("Listener hears incoming message.");
+		handleMessage(e);
+		}
+	console.log("listening");
+	}
+
+function handleMessage(ev){
+	msg = ev.data;
+	console.log("gotten " + msg);
+	var sub = msg.split("|");
+	console.log("gameid : " + sub[0]);
+	if(sub[0]==thisGameId.toString){
+		var list = sub[1].split(" ");
+		var count = list.lenght;
+		for(i=0;i<count;i++){
+			var u = list[i];
+			recordUnit(u[0],u[1],u[2],u[3],u[4],u[5]);
+			}
+		}
+	}
+
+function postRequest(message){
+	httpRequest = new XMLHttpRequest();
+    	httpRequest.open('POST', targetURL);
+	httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	httpRequest.onreadystatechange = function() {//Call a function when the state changes.
+	    if(httpRequest.readyState == 4 && httpRequest.status == 200) {
+	            alert(httpRequest.responseText);
+		        }
+		}
+	httpRequest.send(message);
+	console.log("sent " + message);
+	}
+
+function requestGameState(){
+	//format : S;gameId
+
+	//todo : also send userId
+	postRequest("gameId=1");
+	}
