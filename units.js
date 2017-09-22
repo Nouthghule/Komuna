@@ -40,19 +40,8 @@ function recordUnit(x,y,type,hp,moves,ammo){
 	units[x][y] = unit;
 	}
 
-function initListener(){
-	evtSource = new EventSource(targetURL);
-	evtSource.onmessage = handleMessage;
-	evtSource.onmessage =function(e) {
-		consonle.log("Listener hears incoming message.");
-		handleMessage(e);
-		}
-	console.log("listening");
-	}
-
-function handleMessage(ev){
-	msg = ev.data;
-	console.log("gotten " + msg);
+function handleMessage(msg){
+	console.log("handlemessage gotten " + msg);
 	var sub = msg.split("|");
 	console.log("gameid : " + sub[0]);
 	if(sub[0]==thisGameId.toString){
