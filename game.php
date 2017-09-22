@@ -10,15 +10,13 @@
  
   <script>
   
-    var thisGameId = 1;
+    GAMEID = 1;
     
     function submitMove(){}
     
     function doClick(clickedId) {
     
-      //if(!highUnit){
         highlightUnit(clickedId);
-        //}
 
 
         
@@ -30,7 +28,7 @@
   
   <body>
     <button onclick = "renderMap()">render</button>
-    <button onclick = "requestGameState()">request</button>
+    <button onclick = "getGameStateSynchro()">request</button>
     <?php
     $row = 1;
     $col = 1;
