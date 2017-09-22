@@ -1,5 +1,4 @@
 <?php
-header('Content-Type: text/event-stream');
 
 //todo : get playername from session
 $playerName = "";
@@ -9,6 +8,10 @@ $gameId = 0;
 
 if(isset($_POST['gameId'])){
 	$gameId = $_POST['gameId'];
+	}
+else{
+	echo "no gameid";
+	exit(100);
 	}
 
 $root = __DIR__;
@@ -25,10 +28,13 @@ $statement = $pdo->prepare(
 		games
 	WHERE
 		id = ?"
-	)
+	);
+
 $statement->bindParam(1, $gameId);
 $statement->execute();
 $row = $statement->fetch(PDO::FETCH_OBJ);
+$turnNum = $row->turnNum;
+$activePlayer = $row->activePlayer;
 
 
 $statement = $pdo->prepare(

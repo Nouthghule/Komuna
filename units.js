@@ -44,13 +44,16 @@ function handleMessage(msg){
 	console.log("handlemessage gotten " + msg);
 	var sub = msg.split("|");
 	console.log("gameid : " + sub[0]);
-	if(sub[0]==thisGameId.toString){
-		var list = sub[1].split(" ");
+	if(sub[0]==GAMEID.toString){
+		var list = sub[3].split(" ");
 		var count = list.lenght;
 		for(i=0;i<count;i++){
 			var u = list[i];
+			console.log("looking at " + u);
+			u = u.split(";");
 			recordUnit(u[0],u[1],u[2],u[3],u[4],u[5]);
 			}
+		renderUnits();
 		}
 	}
 

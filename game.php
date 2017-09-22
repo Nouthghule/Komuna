@@ -7,6 +7,7 @@
 
   <script src = "uiUtils.js"></script>
   <script src = "units.js"></script>
+  <script src = "comms.js"></script>
  
   <script>
   
@@ -29,6 +30,9 @@
   <body>
     <button onclick = "renderMap()">render</button>
     <button onclick = "getGameStateSynchro()">request</button>
+    <button onclick = "clearUnits()">clear units</button>
+    <button onclick = "renderUnits()">render units</button>
+
     <?php
     $row = 1;
     $col = 1;

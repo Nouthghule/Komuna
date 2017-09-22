@@ -24,10 +24,10 @@ function getGameStateSynchro(){
 	httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	httpRequest.onreadystatechange = function() {//Call a function when the state changes.
 	    if(httpRequest.readyState == 4 && httpRequest.status == 200) {
-	    		console.log("to sender gotten " + httpRequest.responceText);
+	    		console.log("to sender gotten " + httpRequest.responseText);
 			handleMessage(httpRequest.responseText);
 		        }
 		}
-	httpRequest.send();
-	console.log("sent " + message);
+	httpRequest.send(message);
+	console.log("sent synchro : [" + message + "]");
 	}
