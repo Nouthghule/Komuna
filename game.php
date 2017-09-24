@@ -8,16 +8,85 @@
   <script src = "uiUtils.js"></script>
   <script src = "units.js"></script>
   <script src = "comms.js"></script>
+
  
   <script>
-  
-    GAMEID = 1;
-    
-    function submitMove(){}
+    GAMEID = 1; 
+    SIDE = 1;
+  </script>
+
+  <script>
+       
+    highUnit = null;
+    moveMode = 1;
+
+    function canUse(unit){
+    	var unit.
+    	}
     
     function doClick(clickedId) {
-    
-        highlightUnit(clickedId);
+    	console.log("gotten click at " +clickedId);
+    	var splt = clickedId.split(" ");
+	var x = parseInt(splt[0]);
+	var y = parseInt(splt[1]);
+	
+	var blankTarget = 0;
+	if(units[x][y]==null){
+		blankTarget = 1;
+		}
+
+    	if(highUnit==null){
+		if(!blankTarget){
+			console.log("highing it.");
+			highUnit = clickedId;
+			uiHighlightUnit(x,y);
+			}
+		return;
+		}
+	
+	if(clickedId==highUnit){
+		highUnit = null;
+		console.log("lowing it.");
+		uiLowlightUnit(x,y);
+		return;
+		}
+	
+	if(blankTarget){
+		splt = highUnit.split(" ");
+		var oldX = splt[0];
+		var oldY = splt[1];
+		var isOkay;
+		var cntr = 0;
+		var distX = Math.abs(oldX - x);
+		var distY = Math.abs(oldY - y);
+		
+		if(distX>1||distY>1){
+			console.log("too far away");
+			isOkay = 0;
+			}
+		else{
+			if(distX>0){
+				cntr++;
+				}
+			if(distY>0){
+				cntr++;
+				}
+			if(cntr==1){
+				console.log("okay move");
+				isOkay = 1;
+				}
+			else{
+				console.log("non okay move");
+				isOkay = 0;
+				}
+			}
+
+		if(isOkay){
+			sendMoveSynchro(moveMode,oldX,oldY,x,y);
+			}
+		
+		}
+	
 
 
         

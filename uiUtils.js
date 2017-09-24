@@ -1,10 +1,10 @@
 colorKomunard = "#ff0000";
-colorSoldier  = "#0000ff";
+colorSoldier  = "#99bbff";
 colorHighlight= "#ff00ff";
 colorBackgroundNormal = "#ffffff";
 colorBackgroundHouse = "#b3b3b3";
 colorBackgroundHq = "#ff9999";
-colorBackgroundSpawn = "#99bbff";
+colorBackgroundSpawn = "#80ff80";
 colorBackgroundBarricade = "#802b00";
 borderSizeEmpty = "1px";
 borderSizeWall = "10px";
@@ -28,16 +28,38 @@ function uiShowUnit(x,y){
 	document.getElementById(id).style.opacity = 1;
 	}
 
+function uiHighlightUnit(x,y){
+	var id = x + " " + y + "T";
+	console.log("highlight at " + id);
+	document.getElementById(id).style.backgroundColor = colorHighlight;
+	}
+
+function uiLowlightUnit(x,y){
+	var id = x + " " + y + "T";
+	var unit = units[x][y];
+	var color = "";
+	if(unit.type == "2"){
+		color = colorKomunard;
+		}
+	else{
+		color = colorSoldier;
+		}
+	document.getElementById(id).style.backgroundColor = color;
+	}
+
 function uiSetUnit(x,y,unit){
 	var rootId = x + " " + y;
-	var attack = Math.floor(parseInt(unit.hp)/4);
 	var defense = parseInt(unit.hp) % 4;
+	var attack = Math.floor(parseInt(unit.hp)/4);
+	if(defense!=0){
+		attack++;
+		}
 	var color;
 	var ammoChar = loadedChar;
 	if(unit.ammo == 0){
 		ammoChar = unloadedChar;
 		}
-	if(unit.type == 0){
+	if(unit.type == "2"){
 		color = colorKomunard;
 		}
 	else{

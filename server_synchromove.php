@@ -4,7 +4,6 @@
 $playerName = "";
 $playerId = 1;
 
-$gameId = 0;
 
 if(isset($_POST['gameId'])){
 	$gameId = $_POST['gameId'];
@@ -13,6 +12,15 @@ else{
 	echo "no gameid";
 	exit(100);
 	}
+
+
+$x1= $_POST['x1'];
+$x2= $_POST['x2'];
+$y1= $_POST['y1'];
+$y2= $_POST['y2'];
+$gameId = $_POST['gameId'];
+
+//todo get user from cookie, check if user in game
 
 $root = __DIR__;
 $database = $root . '/data/data.sqlite';
@@ -36,6 +44,36 @@ $row = $statement->fetch(PDO::FETCH_OBJ);
 $turnNum = $row->turnNum;
 $activePlayer = $row->activePlayer;
 
+
+$statement = $pdo->prepare(
+	"SELECT
+		id, unitType, x, y, hp, moves, ammo
+	FROM
+		units	
+	WHERE
+		gameId = ? AND x = ? AND y = ?"
+	);
+
+$statement->execute(array($gameId,$x1,$y1));
+$unit1 = $statement->fetch(PDO::FETCH_OBJ); 
+$statement->execute(array($gameId,$x2,$y2));
+$unit2 = $statement->fetch(PDO::FETCH_OBJ); 
+
+$statement = $pdo->prepare(
+	"UPDATE
+		units	
+	SET
+		x = ?, y = ? 
+	WHERE
+		id = ?"
+	);
+
+$statement->execute(array($x2,$y2,$unit1->id));
+
+
+
+
+//from now on - send current state
 
 $statement = $pdo->prepare(
 	"SELECT
