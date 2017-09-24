@@ -45,7 +45,7 @@ CREATE TABLE units (
 );
 
 DROP TABLE IF EXISTS moves;
-CREATE TABLE moves(
+CREATE TABLE moves (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     gameId INTEGER NOT NULL,
     moveNum INTEGER NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE moves(
     arg1 INTEGER,
     arg2 INTEGER,
     arg3 INTEGER,
-    arg4 INTEGER,
+    arg4 INTEGER
 );
 
 
@@ -81,5 +81,5 @@ INSERT INTO
 	(player1, player2, result, sentMove, lastMove, turnNum, activePlayer, movesLeft)
 VALUES
 	("Lorem","Ipsum",0,0,0,0,0,1),
-	("Lorem","Kasparev",0,5,6,1,1,14)
+	("Lorem","Kasparev",0,0,0,1,1,14)
 ;

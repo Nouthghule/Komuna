@@ -3,6 +3,9 @@
 //todo : get playername from session
 $playerName = "";
 $playerId = 1;
+$validMove = 1; //todo implement checking for validity of move
+$moveType = 1; //todo get from post 
+$side = 1; //todo find out from playername and game->player1 and player2
 
 
 if(isset($_POST['gameId'])){
@@ -40,9 +43,7 @@ $statement = $pdo->prepare(
 
 $statement->bindParam(1, $gameId);
 $statement->execute();
-$row = $statement->fetch(PDO::FETCH_OBJ);
-$turnNum = $row->turnNum;
-$activePlayer = $row->activePlayer;
+$game = $statement->fetch(PDO::FETCH_OBJ);
 
 
 $statement = $pdo->prepare(
@@ -70,7 +71,38 @@ $statement = $pdo->prepare(
 
 $statement->execute(array($x2,$y2,$unit1->id));
 
+//generate move and add it to database
 
+if($validMove){
+	
+	$statement = $pdo->prepare(
+		"INSERT INTO
+			moves
+			(gameId,moveNum,x1,x2,y1,y2,moveType,side,arg1,arg2,arg3,arg4)
+		VALUES
+			(?,?,?,?,?,?,?,?,?,?,?,?)
+		");
+
+	$a1 = $unit1->hp;
+	$a2 = null;
+	$a3 = null;
+	$a4 = null;
+
+	$statement->execute(array($gameId,$game->lastMove+1,$x1,$x2,$y1,$y2,$moveType,$side,$a1,$a2,$a3,$a4));
+
+	
+	$statement = $pdo->prepare(
+		"UPDATE
+			games
+		SET
+			lastMove = lastMove + 1
+		WHERE
+			id = ?"
+		);
+	$statement->execute(array($gameId));
+
+
+	}
 
 
 //from now on - send current state
