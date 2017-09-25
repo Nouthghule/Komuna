@@ -1,8 +1,7 @@
 <?php
 
-//todo : get playername from session
-$playerName = "";
-$playerId = 1;
+$sleepCycle = 1000000; //time to sleep per one cycle in microsec.
+$maxCycle = 120;
 
 
 if(isset($_POST['gameId'])){
@@ -14,11 +13,6 @@ else{
 	}
 
 
-$x1= $_POST['x1'];
-$x2= $_POST['x2'];
-$y1= $_POST['y1'];
-$y2= $_POST['y2'];
-$gameId = $_POST['gameId'];
 
 //todo get user from cookie, check if user in game
 
@@ -29,48 +23,48 @@ $dsn = 'sqlite:' . $database;
 $pdo = new PDO($dsn);
 $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
+$currCycle = 0;
+$timeout = 1;
+
+while($currCycle<$maxCycle){
+
+	$statement = $pdo->prepare(
+		"SELECT
+			sentMove, lastMove
+		FROM
+			games
+		WHERE
+			id = ?"
+		);
+
+	$statement->bindParam(1, $gameId);
+	$statement->execute();
+	$game = $statement->fetch(PDO::FETCH_OBJ);
+
+	if($game->sentMove!=$game->lastMove){
+		break;
+		}
+
+	$currCycle = $currCycle + 1;
+	usleep($sleepCycle);
+	}
+
+if($timeout){
+	//todo send timeout msg
+	exit(100);
+	}
+	
 $statement = $pdo->prepare(
-	"SELECT
-		player1, player2, turnNum, activePlayer 
-	FROM
+	"UPDATE
 		games
+	SET
+		sentMove = lastMove
 	WHERE
 		id = ?"
 	);
 
 $statement->bindParam(1, $gameId);
 $statement->execute();
-$row = $statement->fetch(PDO::FETCH_OBJ);
-$turnNum = $row->turnNum;
-$activePlayer = $row->activePlayer;
-
-
-$statement = $pdo->prepare(
-	"SELECT
-		id, unitType, x, y, hp, moves, ammo
-	FROM
-		units	
-	WHERE
-		gameId = ? AND x = ? AND y = ?"
-	);
-
-$statement->execute(array($gameId,$x1,$y1));
-$unit1 = $statement->fetch(PDO::FETCH_OBJ); 
-$statement->execute(array($gameId,$x2,$y2));
-$unit2 = $statement->fetch(PDO::FETCH_OBJ); 
-
-$statement = $pdo->prepare(
-	"UPDATE
-		units	
-	SET
-		x = ?, y = ? 
-	WHERE
-		id = ?"
-	);
-
-$statement->execute(array($x2,$y2,$unit1->id));
-
-
 
 
 //from now on - send current state

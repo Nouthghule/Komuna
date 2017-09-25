@@ -101,6 +101,7 @@
     <button onclick = "getGameStateSynchro()">request</button>
     <button onclick = "clearUnits()">clear units</button>
     <button onclick = "renderUnits()">render units</button>
+    <button onclick = "listenComet()">listen</button>
 
     <?php
     $row = 1;

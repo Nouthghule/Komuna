@@ -1,5 +1,6 @@
 URLsynchroState = "server_synchrostate.php";
 URLsynchroMove = "server_synchromove.php";
+URLcomet = "server_comet.php";
 
 
 
@@ -52,3 +53,23 @@ function getGameStateSynchro(){
 	httpRequest.send(message);
 	console.log("sent synchro : [" + message + "]");
 	}
+
+
+function listenComet(){
+	message = "gameId=";
+	message += GAMEID.toString();
+	httpRequest = new XMLHttpRequest();
+    	httpRequest.open('POST', URLcomet);
+	httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	httpRequest.onreadystatechange = function() {//Call a function when the state changes.
+	    if(httpRequest.readyState == 4 && httpRequest.status == 200) {
+	    		console.log("From comet gotten " + httpRequest.responseText);
+			handleMessage(httpRequest.responseText);
+			listenComet();
+		        }
+		}
+	httpRequest.send(message);
+	console.log("Starting to listen for comet : [" + message + "]");
+}
+
+
