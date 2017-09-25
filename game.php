@@ -21,7 +21,7 @@
     moveMode = 1;
 
     function canUse(unit){
-    	var unit.
+    	var unit;
     	}
     
     function doClick(clickedId) {

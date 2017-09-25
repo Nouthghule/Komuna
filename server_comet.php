@@ -26,22 +26,24 @@ $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 $currCycle = 0;
 $timeout = 1;
 
+$statement = $pdo->prepare(
+	"SELECT
+		sentMove, lastMove
+	FROM
+		games
+	WHERE
+		id = ?"
+	);
+
 while($currCycle<$maxCycle){
 
-	$statement = $pdo->prepare(
-		"SELECT
-			sentMove, lastMove
-		FROM
-			games
-		WHERE
-			id = ?"
-		);
 
 	$statement->bindParam(1, $gameId);
 	$statement->execute();
 	$game = $statement->fetch(PDO::FETCH_OBJ);
 
 	if($game->sentMove!=$game->lastMove){
+		$timeout = 0;
 		break;
 		}
 
