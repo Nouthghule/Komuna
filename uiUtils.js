@@ -21,11 +21,13 @@ unit layout
 
 function uiHideUnit(x,y){
 	var id = x + " " + y;
-	document.getElementById(id).style.opacity = 0;
+	//document.getElementById(id).style.opacity = 0;
+	document.getElementById(id).style.visibility="hidden";
 	}
 function uiShowUnit(x,y){
 	var id = x + " " + y;
-	document.getElementById(id).style.opacity = 1;
+	document.getElementById(id).style.visibility="visible"; 
+	//document.getElementById(id).style.opacity = 1;
 	}
 
 function uiHighlightUnit(x,y){
