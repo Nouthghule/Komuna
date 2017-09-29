@@ -126,9 +126,10 @@ while($row = $statement->fetch(PDO::FETCH_OBJ)){
 $unitList= substr($unitList, 0, -1);  // toss the last space of unitlist
 //echo "event: boardState\n";
 //echo "data: ";
-echo "$gameId|$turnNum|$activePlayer|";
-echo $unitList;
 
+
+$arr = array('status' => 0, 'gameId' => $gameId, 'turnNum' => $turnNum, 'activePlayer' => $activePlayer, 'unitList' => $unitList);
+echo json_encode($arr);
 
 /*while (ob_get_level() > 0) {
     ob_end_flush();

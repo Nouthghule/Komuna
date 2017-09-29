@@ -42,15 +42,12 @@ function recordUnit(x,y,type,hp,moves,ammo){
 
 function handleMessage(msg){
 	console.log("handlemessage gotten " + msg);
-	var sub = msg.split("|");
-	console.log("gameid : " + sub[0]);
-	var list = sub[3].split(" ");
+	var msgObj = JSON.parse(msg);
+	var list = msgObj.unitList.split(" ");
 	var cnt = list.length;
-	console.log("unitlist (len " + cnt.toString() +"): " + sub[3]);
 	clearUnits();
 	for(i=0;i<cnt;i++){
 		var u = list[i];
-		console.log("looking at " + u);
 		u = u.split(";");
 		recordUnit(u[0],u[1],u[2],u[3],u[4],u[5]);
 		}
