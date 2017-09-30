@@ -1,4 +1,3 @@
-<?php header("X-Clacks-Overhead: GNU Terry Pratchett"); ?> 
 <?php
 session_start();
 

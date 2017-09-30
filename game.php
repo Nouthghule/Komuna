@@ -1,4 +1,3 @@
-<?php header("X-Clacks-Overhead: GNU Terry Pratchett"); ?> 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>

@@ -1,4 +1,3 @@
-<?php header("X-Clacks-Overhead: GNU Terry Pratchett"); ?> 
 <?php
 
 if(($_POST['login']=="")||($_POST['nick']=="")||($_POST['password']=="")){
