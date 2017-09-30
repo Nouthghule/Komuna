@@ -29,6 +29,26 @@ CREATE TABLE games (
     activePlayer INTEGER NOT NULL,
     movesLeft INTEGER NOT NULL
 );
+
+DROP TABLE IF EXISTS gameRequests;
+CREATE TABLE gameRequests (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    sender VARCHAR NOT NULL,
+    recipient VARCHAR NOT NULL,
+    player1 VARCHAR NOT NULL,
+    player2 VARCHAR NOT NULL,
+    state INTEGER NOT NULL
+);
+
+DROP TABLE IF EXISTS finishedGames;
+CREATE TABLE finishedGames(
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    sender VARCHAR NOT NULL,
+    recipient VARCHAR NOT NULL,
+    player1 VARCHAR NOT NULL,
+    player2 VARCHAR NOT NULL,
+    state INTEGER NOT NULL
+);
  
  
 DROP TABLE IF EXISTS units;
