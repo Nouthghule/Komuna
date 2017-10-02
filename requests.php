@@ -21,15 +21,9 @@ $nick = $_SESSION['nick'];
 echo "Bonjour. Mám takovou impresi, že ty budeš $nick.";
 ?>
 
-<table border="1" width="100%">
-<tr>
-<td style="text-align:center"><a href = "newgame.php">Nová hra</a></td>
-<td style="text-align:center"><a href = "requests.php">Nabídky her</a></td>
-<td style="text-align:center"><a href = "ongoing.php">Rozehrané hry</a></td>
-<td style="text-align:center"><a href = "finished.php">Dohrané hry</a></td>
-<td style="text-align:center"><a href = "logout.php">Odhlásit se</a></td>
-</tr>
-</table>
+<br>
+<object type="text/html" data="headmenu.html" width="100%"></object>
+
 <br><br>
 
 <?php
