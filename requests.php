@@ -32,19 +32,60 @@ echo "Bonjour. Mám takovou impresi, že ty budeš $nick.";
 </table>
 <br><br>
 
-Do kolonky druhý hráč zadej hráčovu přezdívku (to, co se mu/jí zobrazuje na vrcholu stránky v pozdravu.)<br>
-Druhý hráč obdrží 
+<?php
 
-<form action="requestGame.php" method="post">
-Druhý hráč : <input type="text" name ="targetNick">
-<select name="senderSide">
-Chci být : <br>
-<option value=1>Vojsko</option>
-<option value=2>Komuna</option>
-</select>
-<input type="submit" name="submit" value="Poslat nabídku hry" />
-</form>
+$myNick = $_SESSION['nick'];
 
+$roott = __DIR__;
+$database = $root . '/data/data.sqlite';
+$dsn = 'sqlite:' . $database;
+
+$pdo = new PDO($dsn);
+$pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+$stV = $pdo->prepare(
+	"SELECT
+		sender, recipient, player2, state
+	FROM
+		gameRequests
+	WHERE
+		player1 = ?"
+	);
+
+$stK = $pdo->prepare(
+	"SELECT
+		sender, recipient, player2, state
+	FROM
+		gameRequests
+	WHERE
+		player2 = ?"
+	);
+
+$stV->bindParam(1, $myNick);
+$stK->bindParam(1, $myNick);
+
+$stV->execute();
+$stK->execute();
+
+$endV = 0;
+$endK = 0;
+
+?>
+
+
+
+<table border="1" width="100%">
+
+<td style="text-align:center" width="20%" bgcolor = h></td>
+
+<?php
+
+
+
+
+?>
+
+</table>
 
 </body>
 </html>

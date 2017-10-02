@@ -38,8 +38,8 @@ Druhý hráč obdrží nabídku hry do své sekce nabídky her. Až ji přijme, 
 
 <form action="requestGame.php" method="post">
 Druhý hráč : <input type="text" name ="targetNick">
+<br>Chci být :
 <select name="senderSide">
-Chci být : <br>
 <option value=1>Vojsko</option>
 <option value=2>Komuna</option>
 </select>
