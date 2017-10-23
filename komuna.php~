@@ -34,7 +34,7 @@ echo "Bonjour. Mám takovou impresi, že ty budeš $nick.";
 ?>
 <br>
 <div w3-include-html="headmenu.html"></div> 
-<script src="w3.js"></script> 
+<script src="/w3.js"></script> 
 <script>w3.includeHTML();</script>
 
 
