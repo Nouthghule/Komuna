@@ -2,17 +2,10 @@
 ob_start();
 session_start();
 
-if(!isset($_POST['targetNick'])){
-	echo "Prosim zadej nick druheho hrace.";
-	header( "refresh:4;url=newgame.php" );
-	}
-$targetNick = $_POST['targetNick'];
+$id = $_POST['id'];
+$rep= $_POST['rep'];
 $nick = $_SESSION['nick'];
 
-if($targetNick == $_SESSION['nick']){
-	echo "Pardon, ale s timhle jsem nepocital. Pokad chces fakt hrat sam(a) proti sobe, tak si zaloz dalsi ucet.";
-	header( "refresh:4;url=newgame.php" );
-	}
 
 $root = __DIR__;
 $database = $root . '/data/data.sqlite';
@@ -23,46 +16,64 @@ $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
 $statement = $pdo->prepare(
 	"SELECT
-		nick
+		player1, player2, recipient
 	FROM
-		users
+		gameRequests
 	WHERE
-		nick = ?"
+		id = ?"
 	);
 
-$statement->bindParam(1, $targetNick);
+$statement->bindParam(1, $id);
 $statement->execute();
 $result = $statement->fetch(PDO::FETCH_OBJ);
 if(!$result){
-	echo "Zadany uzivatel ($targetNick) (bez zavorek) nebyl nalezen.<br>Budto si over, jakou ma prezdivku, nebo ho dokopej k tomu, at se zaregistruje.<br>Nebo ne, jak chces.";
+	echo "request not found";
 	header( "refresh:4;url=newgame.php" );
 	exit(0);
 	}
 
+if(!($nick===$result->recipient)){
+	echo "pokusil jsi se prijmout cizi request. Zamita se.";
+	exit(0);
+	}
+
+if($rep){
+	$statement = $pdo->prepare(
+		"INSERT INTO 
+		games
+		(player1, player2, result, sentMove, lastMove, turnNum, activePlayer, movesLeft)
+		VALUES
+		(?,?,?,?,?,?,?,?)"
+		);
+
+$x = 0;
+$p1 = $result->player1;
+$p2 = $result->player2;
+$statement->bindParam(1, $p1);
+$statement->bindParam(2, $p2);
+$statement->bindParam(3, $x);
+$statement->bindParam(4, $x);
+$statement->bindParam(5, $x);
+$statement->bindParam(6, $x);
+$statement->bindParam(7, $x);
+$statement->bindParam(8, $x);
+$statement->execute();
+	}
+
+
 $statement = $pdo->prepare(
-	"INSERT INTO 
-	gameRequests
-	(sender, recipient, player1, player2, state)
-	VALUES
-	(?,?,?,?,?)"
+	"DELETE FROM gameRequests
+	where id = ?"
 	);
-
-$startState = 0;
-$statement->bindParam(1, $nick);
-$statement->bindParam(2, $targetNick);
-$statement->bindParam(5, $startState);
-if($_POST['senderSide']==1){
-	$statement->bindParam(3, $nick);
-	$statement->bindParam(4, $targetNick);
-	}
-else{
-	$statement->bindParam(4, $nick);
-	$statement->bindParam(3, $targetNick);
-	}
-
+$statement->bindParam(1, $id);
 $statement->execute();
 
-echo "Ok ! Nabidka hry odeslana.";
+if($rep){
+echo "Ok ! Hra byla prijata. Najdes ji v sekci rozehrane hry.";
+}
+else{
+echo "Ok ! Hra byla odmitnuta.";
+	}
 header( "refresh:4;url=newgame.php" );
 exit(0);
 

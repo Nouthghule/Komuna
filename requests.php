@@ -107,6 +107,7 @@ while($ret = $stK->fetch(PDO::FETCH_OBJ)){
 	echo "<button name=\"rep\" value=\"0\">Odmitnout</button>";
 	echo "</form>";
 	echo "</td></tr>";
+	echo "\n";
 	}
 ?>
 

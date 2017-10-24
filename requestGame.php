@@ -12,6 +12,7 @@ $nick = $_SESSION['nick'];
 if($targetNick == $_SESSION['nick']){
 	echo "Pardon, ale s timhle jsem nepocital. Pokad chces fakt hrat sam(a) proti sobe, tak si zaloz dalsi ucet.";
 	header( "refresh:4;url=newgame.php" );
+	exit(0);
 	}
 
 $root = __DIR__;
