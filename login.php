@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 if(($_POST['login']=="")||($_POST['password']=="")){
 	echo 'Prosim, vypln jak login, tak heslo.';
 	exit(0);

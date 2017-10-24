@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 if(($_POST['login']=="")||($_POST['nick']=="")||($_POST['password']=="")){
 	echo 'Tak takhle to nepujde. <br /> Vrat se <a href="register.html">zpatky</a> a vypln mi vsechny kolonky.';
 	exit(0);

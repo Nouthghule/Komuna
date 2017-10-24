@@ -63,9 +63,6 @@ else{
 $statement->execute();
 
 echo "Ok ! Nabidka hry odeslana.";
-if($nick===$targetNick){
-	echo "\nPoslal jsi nabidku sam sobe. Snad jsi chtel presne to.";
-	}
 header( "refresh:4;url=newgame.php" );
 exit(0);
 
