@@ -56,6 +56,9 @@ function uiSetUnit(x,y,unit){
 	if(defense!=0){
 		attack++;
 		}
+	if(defense==0){
+		defense=4;
+		}
 	var color;
 	var ammoChar = loadedChar;
 	if(unit.ammo == 0){

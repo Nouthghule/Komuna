@@ -49,7 +49,7 @@ $stV = $pdo->prepare(
 	FROM
 		gameRequests
 	WHERE
-		player1 = ?"
+		player1 = ? and state = 0 and recipient = player1"
 	);
 
 $stK = $pdo->prepare(
@@ -58,14 +58,26 @@ $stK = $pdo->prepare(
 	FROM
 		gameRequests
 	WHERE
-		player2 = ?"
+		player2 = ? and state = 0 and recipient = player2"
+	);
+
+$stI = $pdo->prepare(
+	"SELECT
+		id, sender, recipient, player2, player1, state
+	FROM
+		gameRequests
+	WHERE
+		(player2 = ? or player1 = ?) and state = 1"
 	);
 
 $stV->bindParam(1, $myNick);
 $stK->bindParam(1, $myNick);
+$stI->bindParam(1, $myNick);
+$stI->bindParam(2, $myNick);
 
 $stV->execute();
 $stK->execute();
+$stI->execute();
 
 $endV = 0;
 $endK = 0;
@@ -76,12 +88,46 @@ $endK = 0;
 
 <table border="1" width="100%">
 
-<tr><td>Nabidky her za vojsko</td></tr>
+<tr><td><b>Hry cekajici na inicializaci</b></td></tr>
+<?php
+while($ret = $stI->fetch(PDO::FETCH_OBJ)){
+	$id 	= $ret->id;
+	$player1= $ret->player1;
+	$player2= $ret->player2;
+	$isKom  = 0;
+	$foe = $player2;
+	$str = "vojsko";
+	if($myNick===$player2){
+		$isKom = 1;
+		$foe = $player1;
+		$str = "komunardy";
+		}
+	
+
+	echo "<tr><td>Proti $foe, budes hrat za $str";
+	echo "</td><td>";
+	echo "<form action=\"initGame.php\" method=\"post\">";
+	if($isKom){
+		echo "<button name=\"id\" value=\"$id\">Inicializovat hru</button>";
+	}
+	else{
+		echo "Tuto hru musi inicializovat tvuj protivnik.";
+		}
+	echo "</form>";
+	}
+?>
+
+</table>
+<br><br>
+
+
+<table border="1" width="100%">
+
+<tr><td><b>Nabidky her za vojsko<b></td></tr>
 
 <?php
 while($ret = $stV->fetch(PDO::FETCH_OBJ)){
 	$origin =  $ret->sender;
-	$state  =  $ret->state;
 	$id 	= $ret->id;
 	echo "<tr><td> Od $origin </td><td>";
 	echo "<form action=\"replyToRequest.php\" method=\"post\">";
@@ -93,7 +139,7 @@ while($ret = $stV->fetch(PDO::FETCH_OBJ)){
 	}
 ?>
 
-<tr><td>Nabidky her za komunardy</td></tr>
+<tr><td><b>Nabidky her za komunardy</b></td></tr>
 
 <?php
 while($ret = $stK->fetch(PDO::FETCH_OBJ)){

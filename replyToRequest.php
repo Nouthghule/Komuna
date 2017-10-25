@@ -37,43 +37,34 @@ if(!($nick===$result->recipient)){
 	exit(0);
 	}
 
+
+
+
 if($rep){
 	$statement = $pdo->prepare(
-		"INSERT INTO 
-		games
-		(player1, player2, result, sentMove, lastMove, turnNum, activePlayer, movesLeft)
-		VALUES
-		(?,?,?,?,?,?,?,?)"
+		"UPDATE
+		game
+		SET
+		state = 1
+		WHERE
+		id =?"
 		);
 
-$x = 0;
-$p1 = $result->player1;
-$p2 = $result->player2;
-$statement->bindParam(1, $p1);
-$statement->bindParam(2, $p2);
-$statement->bindParam(3, $x);
-$statement->bindParam(4, $x);
-$statement->bindParam(5, $x);
-$statement->bindParam(6, $x);
-$statement->bindParam(7, $x);
-$statement->bindParam(8, $x);
-$statement->execute();
+	$statement->bindParam(1, $id);
+	$statement->execute();
+
+	echo "Ok ! Hra byla prijata. Nyni ceka na inicializaci.";
 	}
-
-
-$statement = $pdo->prepare(
-	"DELETE FROM gameRequests
-	where id = ?"
-	);
-$statement->bindParam(1, $id);
-$statement->execute();
-
-if($rep){
-echo "Ok ! Hra byla prijata. Najdes ji v sekci rozehrane hry.";
-}
 else{
-echo "Ok ! Hra byla odmitnuta.";
+	$statement = $pdo->prepare(
+		"DELETE FROM gameRequests
+		where id = ?"
+		);
+	$statement->bindParam(1, $id);
+	$statement->execute();
+	echo "Ok ! Hra byla odmitnuta.";
 	}
+
 header( "refresh:4;url=newgame.php" );
 exit(0);
 
