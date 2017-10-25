@@ -28,6 +28,10 @@ Heslo : <input type="password" name="password"><br>
 </head>
 <body>
 
+<script>
+window.onload = function();
+</script>
+
 <?php
 $user = $_SESSION['user'];
 $nick = $_SESSION['nick'];
@@ -38,6 +42,9 @@ echo "Bonjour. Mám takovou impresi, že ty budeš $nick.";
 <script src="w3.js"></script> 
 <script>w3.includeHTML();</script>
 
+<div style="display: flex; justify-content: center;">
+<img src="Barricade_1871.jpg" align="middle">
+</div>
 
 
 </body>
